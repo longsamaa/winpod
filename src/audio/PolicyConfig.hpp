@@ -2,13 +2,6 @@
 #ifndef WINPOD_AUDIO_POLICY_CONFIG_HPP
 #define WINPOD_AUDIO_POLICY_CONFIG_HPP
 
-// IPolicyConfig: the COM interface the Windows Sound settings use to change the
-// default audio device. Undocumented, but its layout has been stable since
-// Windows 7 and tools like SoundSwitch / AudioDeviceCmdlets rely on it.
-//
-// Only SetDefaultEndpoint is used. The other methods are declared solely to keep
-// the vtable layout right, so their parameter types are simplified to void*.
-
 #include "platform/WindowsSdk.hpp"
 
 

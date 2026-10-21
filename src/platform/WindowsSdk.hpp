@@ -7,7 +7,7 @@
 #endif
 // Win32
 #include <windows.h>
-#include <shellapi.h> // Shell_NotifyIcon (tray icon); WIN32_LEAN_AND_MEAN bỏ nó khỏi windows.h
+#include <shellapi.h>
 #include <dwmapi.h>
 #include <wrl/client.h>
 #include <mmdeviceapi.h>

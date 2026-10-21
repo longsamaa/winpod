@@ -17,7 +17,6 @@ inline constexpr ImU32 kBatteryNormal = IM_COL32(48, 230, 100, 255);
 inline constexpr ImU32 kBatteryText = IM_COL32(255, 255, 255, 255);
 inline constexpr ImU32 kBatteryLabel = IM_COL32(170, 170, 170, 255);
 
-// Combo: ô + nút mũi tên, danh sách bung ra, mục đang chọn / rê chuột.
 inline constexpr ImU32 kComboBg = IM_COL32(12, 12, 12, 255);
 inline constexpr ImU32 kComboBgHovered = IM_COL32(40, 40, 40, 255);
 inline constexpr ImU32 kComboPopupBg = IM_COL32(12, 12, 12, 255);

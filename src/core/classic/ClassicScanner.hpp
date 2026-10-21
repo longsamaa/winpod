@@ -8,9 +8,9 @@
 #include <platform/WindowsSdk.hpp>
 namespace winpod
 {
-inline constexpr wchar_t kPropVendorId[] = L"System.DeviceInterface.Bluetooth.VendorId";   // uint16, Apple = 0x004C
-inline constexpr wchar_t kPropProductId[] = L"System.DeviceInterface.Bluetooth.ProductId"; // uint16, model AirPods
-inline constexpr wchar_t kPropDeviceAddress[] = L"System.Devices.Aep.DeviceAddress";       // chuỗi "aa:bb:cc:dd:ee:ff"
+inline constexpr wchar_t kPropVendorId[] = L"System.DeviceInterface.Bluetooth.VendorId";
+inline constexpr wchar_t kPropProductId[] = L"System.DeviceInterface.Bluetooth.ProductId";
+inline constexpr wchar_t kPropDeviceAddress[] = L"System.Devices.Aep.DeviceAddress";
 
 class ClassicScanner
 {

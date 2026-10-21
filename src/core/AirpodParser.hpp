@@ -33,7 +33,7 @@ struct Earbud
     bool isInEar{false};
     bool isPrimary{false};
 
-    bool operator==(const Earbud&) const = default; // so sánh từng trường (C++20)
+    bool operator==(const Earbud&) const = default;
 };
 
 struct ChargingCase
@@ -57,9 +57,9 @@ struct AirpodsStatus
 
 struct BluetoothPnpId
 {
-    uint16_t vendorIdSource{0}; // 0x0001 = Bluetooth SIG, 0x0002 = USB-IF
-    uint16_t vendorId{0};       // Apple = 0x004C
-    uint16_t productId{0};      // AirPods Pro 2 = 0x2014, ...
+    uint16_t vendorIdSource{0};
+    uint16_t vendorId{0};
+    uint16_t productId{0};
 };
 
 struct ConnectedAirPods
@@ -94,11 +94,7 @@ public:
     bool IsRightCharging(const uint8_t* data, uint32_t length);
     bool IsCaseCharging(const uint8_t* data, uint32_t length);
     bool IsFlipped(const uint8_t* data);
-    // Hardware ID Bluetooth Classic
-    //   "BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0001004c_PID&2014"
-    // -> {source 0x0001, vendor 0x004C, product 0x2014}. nullopt nếu chuỗi không có VID&/PID& đúng dạng.
     static std::optional<BluetoothPnpId> ParseHardwareId(std::wstring_view hardwareId);
-    // PID Classic và model ID trong gói BLE là cùng một số, chỉ đảo thứ tự byte: 0x2014 <-> 0x1420.
     static uint16_t ModelIdFromProductId(uint16_t productId);
 
 private:

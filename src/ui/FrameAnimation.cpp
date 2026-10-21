@@ -107,7 +107,7 @@ void FrameAnimation::Update(float deltaSeconds)
     while (m_Elapsed >= m_FrameTime)
     {
         m_Elapsed -= m_FrameTime;
-        m_Current = (m_Current + 1) % m_FrameCount; // lặp lại từ đầu
+        m_Current = (m_Current + 1) % m_FrameCount;
     }
 }
 

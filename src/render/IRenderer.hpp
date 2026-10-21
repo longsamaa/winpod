@@ -2,7 +2,7 @@
 #ifndef _IRENDERER_HPP_
 #define _IRENDERER_HPP_
 #include "platform/WindowsSdk.hpp"
-#include <imgui.h> // ImDrawData, ImTextureID
+#include <imgui.h>
 
 namespace winpod
 {
@@ -14,7 +14,7 @@ public:
     virtual void Destroy() = 0;
     virtual void Resize(UINT width, UINT height) = 0;
     virtual void BeginFrame(const float clearColor[4]) = 0;
-    virtual void EndFrame() = 0; // Present
+    virtual void EndFrame() = 0;
     virtual bool InitImGui() = 0;
     virtual void ShutdownImGui() = 0;
     virtual void ImGuiNewFrame() = 0;

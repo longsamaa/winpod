@@ -12,28 +12,26 @@ namespace
 {
 using Packet = std::array<uint8_t, 27>;
 
-// Dựng gói proximity pairing (manufacturer data sau company ID 0x004C).
-// Các trường đặt theo góc nhìn tai đang phát (primary), đúng như AirPods gửi.
 struct PacketBuilder
 {
     uint16_t modelId{static_cast<uint16_t>(AirpodsModel::AirPodsPro2)};
-    bool primaryIsLeft{true}; // byte 5 bit 0x20
-    bool primaryInEar{false}; // byte 5 bit 0x02
-    bool otherInEar{false};   // byte 5 bit 0x08
-    uint8_t primaryBattery{10}; // nibble 0-10 (x10%), 15 = không có
+    bool primaryIsLeft{true};
+    bool primaryInEar{false};
+    bool otherInEar{false};
+    uint8_t primaryBattery{10};
     uint8_t otherBattery{10};
     uint8_t caseBattery{10};
-    bool primaryCharging{false}; // byte 7 bit 0x10
-    bool otherCharging{false};   // byte 7 bit 0x20
-    bool caseCharging{false};    // byte 7 bit 0x40
-    bool lidClosed{false};       // byte 8 bit 0x08
+    bool primaryCharging{false};
+    bool otherCharging{false};
+    bool caseCharging{false};
+    bool lidClosed{false};
     uint8_t color{0};
 
     Packet Build() const
     {
         Packet p{};
-        p[0] = 0x07; // proximity pairing
-        p[1] = 25;   // độ dài phần còn lại
+        p[0] = 0x07;
+        p[1] = 25;
         p[2] = 0x01;
         p[3] = static_cast<uint8_t>(modelId >> 8);
         p[4] = static_cast<uint8_t>(modelId & 0xFF);
@@ -55,7 +53,6 @@ std::optional<AirpodsStatus> Parse(const Packet& p)
 }
 } // namespace
 
-// ------------------------------------------------------- gói không hợp lệ
 
 TEST(AirpodParserParse, RejectsNullData)
 {
@@ -74,7 +71,7 @@ TEST(AirpodParserParse, RejectsWrongLength)
 TEST(AirpodParserParse, RejectsNonProximityPairingType)
 {
     Packet p = PacketBuilder{}.Build();
-    p[0] = 0x10; // Nearby Info, không phải AirPods
+    p[0] = 0x10;
     EXPECT_FALSE(Parse(p).has_value());
 }
 
@@ -85,7 +82,6 @@ TEST(AirpodParserParse, RejectsWrongLengthByte)
     EXPECT_FALSE(Parse(p).has_value());
 }
 
-// ------------------------------------------------------------- model
 
 TEST(AirpodParserParse, ReadsKnownModels)
 {
@@ -124,7 +120,7 @@ TEST(AirpodParserParse, UnknownModelKeepsRawId)
     PacketBuilder b;
     b.modelId = 0x9920;
     const auto status = Parse(b.Build());
-    ASSERT_TRUE(status.has_value()); // model lạ vẫn đọc được pin/trạng thái
+    ASSERT_TRUE(status.has_value());
     EXPECT_EQ(status->model, AirpodsModel::Unknown);
     EXPECT_EQ(status->modelId, 0x9920);
     EXPECT_EQ(status->name, "Unknown");
@@ -137,14 +133,13 @@ TEST(AirpodParserParse, ReadsColor)
     EXPECT_EQ(Parse(b.Build())->color, 0x05);
 }
 
-// ------------------------------------------- primary trái/phải (bit 0x20)
 
 TEST(AirpodParserParse, PrimaryLeftMapsFieldsToLeft)
 {
     PacketBuilder b;
     b.primaryIsLeft = true;
-    b.primaryBattery = 10; // 100%
-    b.otherBattery = 8;    // 80%
+    b.primaryBattery = 10;
+    b.otherBattery = 8;
     b.primaryCharging = true;
     b.primaryInEar = true;
     const auto s = Parse(b.Build());
@@ -165,7 +160,6 @@ TEST(AirpodParserParse, PrimaryLeftMapsFieldsToLeft)
 
 TEST(AirpodParserParse, PrimaryRightMapsFieldsToRight)
 {
-    // Cùng nội dung như test trên, chỉ khác bit 0x20: mọi trường phải đổi bên.
     PacketBuilder b;
     b.primaryIsLeft = false;
     b.primaryBattery = 10;
@@ -218,7 +212,6 @@ TEST(AirpodParserParse, BothInEar)
     EXPECT_TRUE(s->right.isInEar);
 }
 
-// ------------------------------------------------------------- pin
 
 TEST(AirpodParserParse, BatteryNibbleToPercent)
 {
@@ -239,7 +232,6 @@ TEST(AirpodParserParse, BatteryNibbleToPercent)
 
 TEST(AirpodParserParse, BatteryUnavailableIsNullopt)
 {
-    // 15 (0xF) = không có số liệu (tai không kết nối, hộp đóng xa...); 11-14 cũng không hợp lệ.
     for (const uint8_t nibble : {uint8_t{11}, uint8_t{14}, uint8_t{15}})
     {
         SCOPED_TRACE(static_cast<int>(nibble));
@@ -248,13 +240,12 @@ TEST(AirpodParserParse, BatteryUnavailableIsNullopt)
         b.caseBattery = nibble;
         const auto s = Parse(b.Build());
         ASSERT_TRUE(s.has_value());
-        EXPECT_FALSE(s->right.battery.has_value()); // primary trái nên "other" là phải
+        EXPECT_FALSE(s->right.battery.has_value());
         EXPECT_FALSE(s->chargingCase.battery.has_value());
-        EXPECT_EQ(s->left.battery, 100); // tai kia không bị ảnh hưởng
+        EXPECT_EQ(s->left.battery, 100);
     }
 }
 
-// ------------------------------------------------------------- hộp sạc
 
 TEST(AirpodParserParse, CaseCharging)
 {
@@ -265,7 +256,6 @@ TEST(AirpodParserParse, CaseCharging)
     ASSERT_TRUE(s.has_value());
     EXPECT_TRUE(s->chargingCase.isCharging);
     EXPECT_EQ(s->chargingCase.battery, 40);
-    // Cờ sạc của hộp không lan sang tai.
     EXPECT_FALSE(s->left.isCharging);
     EXPECT_FALSE(s->right.isCharging);
 }
@@ -280,11 +270,9 @@ TEST(AirpodParserParse, LidOpenAndClosed)
     EXPECT_FALSE(Parse(b.Build())->chargingCase.isLidOpen);
 }
 
-// ------------------------------------------------------------- tổng hợp
 
 TEST(AirpodParserParse, FullPacket)
 {
-    // Tai phải phát; trái 70% đang sạc trong hộp, phải 90% đang đeo; hộp 50% mở nắp.
     PacketBuilder b;
     b.modelId = static_cast<uint16_t>(AirpodsModel::AirPodsPro2UsbC);
     b.primaryIsLeft = false;
@@ -315,7 +303,6 @@ TEST(AirpodParserParse, FullPacket)
     EXPECT_TRUE(s->chargingCase.isLidOpen);
 }
 
-// ============================================== Hardware ID (Bluetooth Classic)
 
 TEST(AirpodParserHardwareId, ParsesBluetoothHardwareId)
 {
@@ -340,7 +327,6 @@ TEST(AirpodParserHardwareId, IsCaseInsensitive)
 
 TEST(AirpodParserHardwareId, AcceptsIdWithoutServiceGuid)
 {
-    // Một số nút chỉ có "BTHENUM\Dev_..." hoặc chuỗi rút gọn nhưng vẫn có VID&/PID&.
     const auto id = AirpodParser::ParseHardwareId(L"BTHENUM\\VID&0001004C_PID&2024&REV&0100");
     ASSERT_TRUE(id.has_value());
     EXPECT_EQ(id->productId, 0x2024);
@@ -349,17 +335,16 @@ TEST(AirpodParserHardwareId, AcceptsIdWithoutServiceGuid)
 TEST(AirpodParserHardwareId, RejectsMalformedIds)
 {
     EXPECT_FALSE(AirpodParser::ParseHardwareId(L"").has_value());
-    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_LOCALMFG&0002").has_value()); // không có VID
-    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_VID&0001004c").has_value()); // thiếu PID
-    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_VID&004c_PID&2014").has_value()); // VID thiếu nguồn
-    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_VID&0001004c_PID&20").has_value()); // PID ngắn
-    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_VID&0001004c_PID&20XZ").has_value()); // không hex
-    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"USB\\VID_05AC&PID_8290").has_value()); // dạng USB
+    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_LOCALMFG&0002").has_value());
+    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_VID&0001004c").has_value());
+    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_VID&004c_PID&2014").has_value());
+    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_VID&0001004c_PID&20").has_value());
+    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"BTHENUM\\{0000110b}_VID&0001004c_PID&20XZ").has_value());
+    EXPECT_FALSE(AirpodParser::ParseHardwareId(L"USB\\VID_05AC&PID_8290").has_value());
 }
 
 TEST(AirpodParserHardwareId, ProductIdMapsToBleModel)
 {
-    // PID Classic đảo byte = model ID trong gói BLE.
     struct Case
     {
         uint16_t productId;
@@ -382,7 +367,6 @@ TEST(AirpodParserHardwareId, ProductIdMapsToBleModel)
 
 TEST(AirpodParserHardwareId, NonAirPodsProductIsUnknown)
 {
-    // PID Apple nhưng không phải AirPods (ví dụ Beats) -> Unknown -> bị lọc bỏ.
     AirpodParser parser;
     EXPECT_EQ(parser.ToModel(AirpodParser::ModelIdFromProductId(0x200B)), AirpodsModel::Unknown);
     EXPECT_EQ(parser.ToModel(AirpodParser::ModelIdFromProductId(0x0000)), AirpodsModel::Unknown);

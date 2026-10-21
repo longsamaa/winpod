@@ -18,7 +18,6 @@ const fs::path kResources{WINPOD_RESOURCES_DIR};
 const fs::path kBuds = kResources / "buds";
 const fs::path kCase = kResources / "case";
 
-// Load / Unload / AspectRatio không cần ImGui context (chỉ Draw cần), nên test được không cần cửa sổ.
 class FrameAnimationTest : public ::testing::Test
 {
 protected:
@@ -47,7 +46,6 @@ protected:
         return path;
     }
 
-    // JSON hợp lệ về cú pháp, trỏ vào PNG thật (đường dẫn tuyệt đối) với bố cục tuỳ ý.
     static std::string SheetJson(const std::string& layout)
     {
         const std::string image = (kBuds / "AirPods_1.png").generic_string();
@@ -59,7 +57,6 @@ protected:
 };
 } // namespace
 
-// ---------------------------------------------------------------- load
 
 TEST_F(FrameAnimationTest, LoadsEverySheet)
 {
@@ -73,7 +70,7 @@ TEST_F(FrameAnimationTest, LoadsEverySheet)
             FrameAnimation anim;
             ASSERT_TRUE(anim.Load(entry.path()));
             EXPECT_TRUE(anim.IsLoaded());
-            EXPECT_GT(anim.AspectRatio(), 0.0f); // theo vùng "content" của từng sheet
+            EXPECT_GT(anim.AspectRatio(), 0.0f);
         }
     }
 }
@@ -119,7 +116,7 @@ TEST_F(FrameAnimationTest, TwoAnimationsShareOneTexture)
     FrameAnimation a, b;
     ASSERT_TRUE(a.Load(kBuds / "AirPods_1.json"));
     ASSERT_TRUE(b.Load(kBuds / "AirPods_1.json"));
-    EXPECT_EQ(m_Renderer->createCount, 1); // ResourceManager cache: không tạo texture lần hai
+    EXPECT_EQ(m_Renderer->createCount, 1);
 }
 
 TEST_F(FrameAnimationTest, UnloadKeepsTextureInResourceManager)
@@ -129,7 +126,7 @@ TEST_F(FrameAnimationTest, UnloadKeepsTextureInResourceManager)
     anim.Unload();
 
     EXPECT_FALSE(anim.IsLoaded());
-    EXPECT_EQ(m_Renderer->destroyCount, 0); // chỉ bỏ tham chiếu, texture vẫn trong cache
+    EXPECT_EQ(m_Renderer->destroyCount, 0);
     EXPECT_NE(ResourceManager::instance().GetTexture(kBuds / "AirPods_1.png"), nullptr);
 }
 
@@ -140,10 +137,9 @@ TEST_F(FrameAnimationTest, NotLoadedAfterResourceManagerUnloadsTexture)
 
     ResourceManager::instance().UnloadTexture(kBuds / "AirPods_1.png");
 
-    EXPECT_FALSE(anim.IsLoaded()); // không vẽ texture đã huỷ
+    EXPECT_FALSE(anim.IsLoaded());
 }
 
-// ------------------------------------------------------------- thất bại
 
 TEST_F(FrameAnimationTest, FailsWhenJsonMissing)
 {
@@ -162,7 +158,6 @@ TEST_F(FrameAnimationTest, FailsOnMalformedJson)
 
 TEST_F(FrameAnimationTest, FailsWhenKeyMissing)
 {
-    // Thiếu "fps".
     FrameAnimation anim;
     EXPECT_FALSE(anim.Load(
         WriteJson("no_fps.json", SheetJson(R"("frameWidth": 256, "frameHeight": 224, "columns": 12, "frames": 180)"))));
@@ -189,7 +184,6 @@ TEST_F(FrameAnimationTest, FailsWhenImageMissing)
 
 TEST_F(FrameAnimationTest, FailsWhenImageTooSmallForLayout)
 {
-    // buds/AirPods_1.png là 12x15 ô 256x224; khai 20 cột thì ảnh không đủ rộng.
     FrameAnimation anim;
     EXPECT_FALSE(anim.Load(WriteJson(
         "too_many_columns.json",

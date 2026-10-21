@@ -12,7 +12,6 @@ std::filesystem::path executablePath() {
     if (length == 0) {
       return {};
     }
-    // Buffer too small: the path was truncated to exactly buffer.size() characters.
     if (length < buffer.size()) {
       buffer.resize(length);
       return std::filesystem::path(buffer);

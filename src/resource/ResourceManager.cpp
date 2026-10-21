@@ -11,9 +11,6 @@ namespace winpod
 namespace
 {
 using StbPixels = std::unique_ptr<stbi_uc, decltype(&stbi_image_free)>;
-
-// Giải mã ảnh thành RGBA 8-bit, alpha không nhân sẵn (khớp DXGI_FORMAT_R8G8B8A8_UNORM + blend của ImGui).
-// Đọc file bằng std::filesystem::path rồi giải mã từ bộ nhớ, để đường dẫn Unicode vẫn chạy.
 StbPixels DecodeRgba(const std::filesystem::path& path, UINT& width, UINT& height)
 {
     StbPixels pixels(nullptr, &stbi_image_free);
@@ -110,7 +107,7 @@ std::shared_ptr<Texture> ResourceManager::LoadTexture(const std::filesystem::pat
     if (!texture->IsValid())
     {
         logger->error("[Resource] Create texture {}x{} for {} failed", width, height, imagePath.string());
-        return nullptr; // không cache bản lỗi: lần sau thử lại được
+        return nullptr;
     }
     m_Renderer->UpdateTexture(texture->id, pixels.get(), width * 4);
     texture->width = static_cast<int>(width);

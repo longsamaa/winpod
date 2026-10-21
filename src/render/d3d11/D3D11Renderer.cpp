@@ -206,7 +206,6 @@ void D3D11Renderer::BeginSmoothSampling(ImDrawList* drawList)
 
 void D3D11Renderer::EndSmoothSampling(ImDrawList* drawList)
 {
-    // Backend DX11 của ImGui tự hiểu callback đặc biệt này: đặt lại sampler/state mặc định.
     drawList->AddCallback(ImDrawCallback_ResetRenderState, nullptr);
 }
 

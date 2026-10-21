@@ -65,7 +65,7 @@ const float BatteryCircleComponent::AspectRatio()
         return 1.0f;
     const float n = static_cast<float>(m_Entries.size());
     const float gap = ImGui::GetStyle().ItemSpacing.x;
-    return (n * Diameter() + (n - 1.0f) * gap) / h; // các vòng nằm ngang
+    return (n * Diameter() + (n - 1.0f) * gap) / h;
 }
 
 void BatteryCircleComponent::Draw(const ImVec2& size)

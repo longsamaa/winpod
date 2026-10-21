@@ -36,14 +36,13 @@ public:
 private:
     bool CreateRT();
     void CleanupRT();
-    // ImDrawCallback: gắn m_MipSampler (UserCallbackData = this) trong lúc ImGui backend đang render.
     static void SetMipSamplerCallback(const ImDrawList* parentList, const ImDrawCmd* cmd);
 
     struct Texture
     {
         Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
-        bool mipmapped{false}; // có GenerateMips được không
+        bool mipmapped{false};
     };
 
 private:

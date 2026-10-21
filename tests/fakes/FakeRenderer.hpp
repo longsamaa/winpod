@@ -6,7 +6,6 @@
 
 namespace winpod::test
 {
-// IRenderer không cần GPU: chỉ ghi lại texture nào đang sống để test kiểm tra tạo/huỷ.
 class FakeRenderer final : public IRenderer
 {
 public:
@@ -51,10 +50,8 @@ public:
     void BeginSmoothSampling(ImDrawList*) override {}
     void EndSmoothSampling(ImDrawList*) override {}
 
-    // Cấu hình
     bool failCreate{false};
 
-    // Quan sát
     std::set<ImTextureID> live;
     int createCount{0};
     int updateCount{0};
