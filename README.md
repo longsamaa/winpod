@@ -4,6 +4,10 @@ WinPod is a small Windows 11 tray app that shows AirPods status, similar to the 
 
 Written in C++20 on Win32 + Direct3D 11 + Dear ImGui. Bluetooth data is read through C++/WinRT (`Windows.Devices.Bluetooth`).
 
+<p align="center">
+  <img src="docs/demo.gif" alt="WinPod toast showing AirPods Pro 2 battery" width="256">
+</p>
+
 ## Features
 
 - Reads the Apple Continuity "Proximity Pairing" BLE advertisement that AirPods broadcast: model, battery of each bud and the case, charging state, in-ear detection, case lid state.
