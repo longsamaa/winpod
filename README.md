@@ -1,46 +1,29 @@
 # WinPod
 
-WinPod is a small Windows 11 tray app that shows AirPods status, similar to the popup on an iPhone or Mac. When AirPods connect, a toast appears in the bottom-right corner with the model name, an animation of the buds and case, and the battery level of the left bud, right bud and case.
-
-Written in C++20 on Win32 + Direct3D 11 + Dear ImGui. Bluetooth data is read through C++/WinRT (`Windows.Devices.Bluetooth`).
-
 <p align="center">
-  <img src="docs/demo.gif" alt="WinPod toast showing AirPods Pro 2 battery" width="256">
+  <img src="docs/demo.gif" alt="WinPod" width="256">
 </p>
 
-## Features
+Just a small project: an AirPods battery popup for Windows, like the one on iPhone.
 
-- Reads the Apple Continuity "Proximity Pairing" BLE advertisement that AirPods broadcast: model, battery of each bud and the case, charging state, in-ear detection, case lid state.
-- Detects AirPods connected over Bluetooth Classic by vendor/product ID, and tracks connect / disconnect.
-- Toast UI: model name, sprite animations of the buds and case, battery rings with charging / in-ear / lid-open icons, slide-in animation.
-- Tray icon with Open / Exit. The × button hides the toast; Exit quits the app.
-- Lists audio input / output devices and changes the Windows default device from the toast.
+## How it works
 
-Battery levels in the BLE advertisement are only sent in 10% steps; the exact 1% value is in an encrypted part of the packet, so WinPod shows 10% steps.
+AirPods keep broadcasting a BLE advertisement (Apple's "Proximity Pairing" message) with the model, battery of each bud and the case, charging, in-ear and lid state. WinPod listens for it with `BluetoothLEAdvertisementWatcher` and parses the bytes. I worked out the format mostly from this paper: https://inria.hal.science/hal-02394619/document
 
-## Libraries
+Connect/disconnect comes from Bluetooth Classic: the paired device list, filtered by Apple's vendor ID and the AirPods product IDs.
 
-| Library | Used for | Source |
-|---|---|---|
-| [C++/WinRT](https://github.com/microsoft/cppwinrt) (Windows SDK) | Bluetooth LE advertisement watcher, device enumeration | Windows SDK |
-| Win32, Direct3D 11, DXGI, DWM | Window, rendering, transparent rounded window | Windows SDK |
-| Core Audio (MMDevice API) | Audio device list, device change notifications, default device | Windows SDK |
-| [Dear ImGui](https://github.com/ocornut/imgui) | UI (Win32 + DX11 backends) | git submodule `external/imgui` |
-| [trantor](https://github.com/an-tao/trantor) | Event loops (UI loop, Bluetooth worker thread) | vcpkg |
-| [spdlog](https://github.com/gabime/spdlog) | Logging | vcpkg |
-| [nlohmann/json](https://github.com/nlohmann/json) | Sprite sheet layout files | vcpkg |
-| [stb_image](https://github.com/nothings/stb) | PNG decoding | vcpkg |
-| [GoogleTest](https://github.com/google/googletest) | Unit tests | vcpkg |
-| [vcpkg](https://github.com/microsoft/vcpkg) | Package manager (manifest mode, `vcpkg.json`) | git submodule `external/vcpkg` |
+One catch: the advertisement only has battery in 10% steps, rounded down, so WinPod can show up to 9% less than your iPhone (91% shows as 90%). The exact value is in the encrypted part of the packet, which I can't read on Windows.
 
-Fonts and icons in `resources/fonts/`:
+## Built with
 
-- [Inter](https://github.com/rsms/inter) (Regular, SemiBold) — SIL Open Font License, see `LICENSE-Inter.txt`.
-- [Font Awesome 7 Free](https://fontawesome.com) Solid — icons CC BY 4.0, font SIL OFL 1.1, see `LICENSE-FontAwesome.txt`.
+- C++20, Win32, Direct3D 11, C++/WinRT for Bluetooth, Core Audio for the device list
+- [Dear ImGui](https://github.com/ocornut/imgui) for the UI
+- [trantor](https://github.com/an-tao/trantor), [spdlog](https://github.com/gabime/spdlog), [nlohmann/json](https://github.com/nlohmann/json), [stb_image](https://github.com/nothings/stb), [GoogleTest](https://github.com/google/googletest), all from [vcpkg](https://github.com/microsoft/vcpkg)
+- Fonts: [Inter](https://github.com/rsms/inter) and [Font Awesome Free](https://fontawesome.com) (licenses in `resources/fonts/`)
 
 ## Building
 
-Requirements: Windows 11, Visual Studio 2026 (MSVC, C++ desktop workload), CMake 3.25+, Git.
+You need Windows 11, Visual Studio 2026 with the C++ desktop workload, and CMake 3.25+.
 
 ```
 git clone --recurse-submodules https://github.com/longsamaa/winpod.git
@@ -50,39 +33,10 @@ cmake -B build
 cmake --build build --config Release
 ```
 
-If you cloned without `--recurse-submodules`, run `git submodule update --init` first.
+The exe ends up in `build/bin/Release/`, with `resources/` copied next to it. Logs go to `logs/app.log` beside the exe.
 
-The executable is `build/bin/<Config>/winpod.exe`; the build copies `resources/` next to it. Logs are written to `logs/app.log` next to the exe.
+Tests: `ctest --test-dir build -C Debug` after a Debug build.
 
-Run the tests:
+## Notes
 
-```
-cmake --build build --config Debug
-ctest --test-dir build -C Debug
-```
-
-## Project layout
-
-```
-src/
-  main.cpp          wWinMain, render loop
-  app/              Application, Win32 Window, TrayIcon
-  core/             AirpodParser, AirpodDevice
-    ble/            BLE advertisement watcher
-    classic/        Bluetooth Classic scanner
-  audio/            Sound (MMDevice), NotificationClient, IPolicyConfig
-  render/           IRenderer, d3d11/ backend
-  resource/         ResourceManager (textures), stb_image
-  ui/               ImGuiLayer, Toast, Table, ChooseProfile, FrameAnimation, components
-  log/, utils/, platform/
-resources/          sprite sheets (buds/, case/), fonts/, icons/
-tests/              GoogleTest
-```
-
-## References
-
-- Apple Continuity / BLE advertisement format: https://inria.hal.science/hal-02394619/document
-
-## Disclaimer
-
-WinPod is not affiliated with or endorsed by Apple. AirPods is a trademark of Apple Inc. Changing the default audio device uses `IPolicyConfig`, an undocumented Windows interface that may change in future Windows versions.
+Not affiliated with Apple. Switching the default device uses `IPolicyConfig`, an undocumented Windows interface, so a future Windows update could break that part.
