@@ -10,9 +10,7 @@ Just a small project: an AirPods battery popup for Windows, like the one on iPho
 
 AirPods keep broadcasting a BLE advertisement (Apple's "Proximity Pairing" message) with the model, battery of each bud and the case, charging, in-ear and lid state. WinPod listens for it with `BluetoothLEAdvertisementWatcher` and parses the bytes. I worked out the format mostly from this paper: https://inria.hal.science/hal-02394619/document
 
-Connect/disconnect comes from Bluetooth Classic: the paired device list, filtered by Apple's vendor ID and the AirPods product IDs.
-
-One catch: the advertisement only has battery in 10% steps, rounded down, so WinPod can show up to 9% less than your iPhone (91% shows as 90%). The exact value is in the encrypted part of the packet, which I can't read on Windows.
+Battery levels in the advertisement come in 10% steps, rounded down, so the value shown can be up to 9% lower than on an iPhone (91% shows as 90%). The exact percentage is only in the encrypted part of the packet, which is not readable on Windows.
 
 ## Built with
 
@@ -37,6 +35,3 @@ The exe ends up in `build/bin/Release/`, with `resources/` copied next to it. Lo
 
 Tests: `ctest --test-dir build -C Debug` after a Debug build.
 
-## Notes
-
-Not affiliated with Apple. Switching the default device uses `IPolicyConfig`, an undocumented Windows interface, so a future Windows update could break that part.
