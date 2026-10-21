@@ -1,0 +1,13 @@
+-std=c++20
+-Isrc
+-Itests
+-Ibuild/vcpkg_installed/x64-windows/include
+-Iexternal/imgui
+-Iexternal/imgui/backends
+-DSPDLOG_SHARED_LIB
+-DSPDLOG_COMPILED_LIB
+-DSPDLOG_FMT_EXTERNAL
+-DFMT_SHARED
+-DWIN32_LEAN_AND_MEAN
+-DNOMINMAX
+-DWINPOD_RESOURCES_DIR="resources"

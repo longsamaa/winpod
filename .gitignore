@@ -1,0 +1,5 @@
+build/
+CLAUDE.md
+.claude/
+CMakePresets.json
+.cache/

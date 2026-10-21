@@ -1,0 +1,4 @@
+# clangd đọc flag biên dịch từ build Ninja riêng (CMAKE_EXPORT_COMPILE_COMMANDS), xem CLAUDE.md.
+# Đường dẫn tương đối với thư mục chứa file này.
+CompileFlags:
+  CompilationDatabase: build/clangd

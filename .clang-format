@@ -1,0 +1,23 @@
+# Microsoft style = Allman braces, 4-space indent, 120 columns.
+BasedOnStyle: Microsoft
+Language: Cpp
+Standard: c++20
+
+ColumnLimit: 120
+IndentWidth: 4
+AccessModifierOffset: -4          # public:/private: flush with "class"
+NamespaceIndentation: None
+PointerAlignment: Left            # int* p, const T& x
+ReferenceAlignment: Left
+
+AlignAfterOpenBracket: Align
+AllowShortFunctionsOnASingleLine: Inline   # getters in class bodies stay on one line
+AllowShortLambdasOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+BreakConstructorInitializers: BeforeComma
+PackConstructorInitializers: NextLine
+FixNamespaceComments: true
+SpaceAfterTemplateKeyword: true
+
+# Order matters on Windows (trantor/winsock2.h before windows.h), so don't sort.
+SortIncludes: Never

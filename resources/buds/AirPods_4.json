@@ -1,0 +1,14 @@
+{
+    "image":  "AirPods_4.png",
+    "frameWidth":  256,
+    "frameHeight":  224,
+    "columns":  12,
+    "frames":  180,
+    "fps":  30,
+    "content":  {
+                    "x":  34,
+                    "y":  64,
+                    "w":  155,
+                    "h":  109
+                }
+}

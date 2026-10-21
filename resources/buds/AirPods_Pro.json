@@ -1,0 +1,14 @@
+{
+    "image":  "AirPods_Pro.png",
+    "frameWidth":  256,
+    "frameHeight":  224,
+    "columns":  12,
+    "frames":  180,
+    "fps":  30,
+    "content":  {
+                    "x":  29,
+                    "y":  58,
+                    "w":  191,
+                    "h":  112
+                }
+}
