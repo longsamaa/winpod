@@ -1,5 +1,5 @@
 #include "D3D11Renderer.hpp"
-#include "log/Log.hpp"
+#include "common/Log.hpp"
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <algorithm>

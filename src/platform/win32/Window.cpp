@@ -1,5 +1,5 @@
 #include "Window.hpp"
-#include <log/Log.hpp>
+#include "common/Log.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>

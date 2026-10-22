@@ -1,7 +1,7 @@
 #pragma once
 #ifndef _WINPOD_CLASSIC_SCANNER_HPP_
 #define _WINPOD_CLASSIC_SCANNER_HPP_
-#include <core/AirpodParser.hpp>
+#include "bluetooth/AirpodParser.hpp"
 #include <functional>
 #include <string>
 #include <vector>

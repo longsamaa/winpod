@@ -1,8 +1,8 @@
 #ifndef _TOAST_HPP_
 #define _TOAST_HPP_
-#include "core/AirpodParser.hpp"
-#include "ui/Table.hpp"
-#include "ui/ChooseProfile.hpp"
+#include "bluetooth/AirpodParser.hpp"
+#include "ui/toast/Table.hpp"
+#include "ui/toast/ChooseProfile.hpp"
 #include <optional>
 #include <string>
 #include <functional>

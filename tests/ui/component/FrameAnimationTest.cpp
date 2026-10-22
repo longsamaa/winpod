@@ -1,6 +1,6 @@
 #include "fakes/FakeRenderer.hpp"
 #include "resource/ResourceManager.hpp"
-#include "ui/FrameAnimation.hpp"
+#include "ui/component/FrameAnimation.hpp"
 #include <gtest/gtest.h>
 #include <filesystem>
 #include <fstream>

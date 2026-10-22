@@ -1,9 +1,9 @@
 #include "ImGuiLayer.hpp"
-#include "app/Window.hpp"
+#include "platform/win32/Window.hpp"
 #include "imgui.h"
 #include "imgui_impl_win32.h"
-#include "log/Log.hpp"
-#include "ui/Font.hpp"
+#include "common/Log.hpp"
+#include "ui/imgui/Font.hpp"
 #include <filesystem>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

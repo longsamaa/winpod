@@ -1,5 +1,5 @@
 #include "FrameAnimation.hpp"
-#include "log/Log.hpp"
+#include "common/Log.hpp"
 #include "render/IRenderer.hpp"
 #include "resource/ResourceManager.hpp"
 #include <fstream>

@@ -1,4 +1,4 @@
-#include "TrayIcon.hpp"
+#include "platform/win32/TrayIcon.hpp"
 #include <cwchar>
 #include <filesystem>
 namespace winpod

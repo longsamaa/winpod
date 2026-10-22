@@ -4,7 +4,7 @@
 #ifndef _WINPOD_BLE_WATCHER_HPP_
 #define _WINPOD_BLE_WATCHER_HPP_
 #include "platform/WindowsSdk.hpp"
-#include <core/AirpodParser.hpp>
+#include "bluetooth/AirpodParser.hpp"
 #include <atomic>
 #include <memory>
 #include <optional>

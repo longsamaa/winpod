@@ -1,7 +1,7 @@
 #include "BatteryCircleComponent.hpp"
-#include "ui/Colors.hpp"
-#include "ui/Icons.hpp"
-#include "ui/ImGuiLayer.hpp"
+#include "ui/theme/Colors.hpp"
+#include "ui/theme/Icons.hpp"
+#include "ui/imgui/ImGuiLayer.hpp"
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <algorithm>

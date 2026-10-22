@@ -2,7 +2,7 @@
 #ifndef _WINDPOD_WINDOW_HPP_
 #define _WINDPOD_WINDOW_HPP_
 #include "platform/WindowsSdk.hpp"
-#include "TrayIcon.hpp"
+#include "platform/win32/TrayIcon.hpp"
 #include <string>
 #include <functional>
 namespace winpod

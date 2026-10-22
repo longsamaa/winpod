@@ -1,5 +1,5 @@
 #include "Table.hpp"
-#include "log/Log.hpp"
+#include "common/Log.hpp"
 #include <imgui.h>
 #include <algorithm>
 #include <cassert>

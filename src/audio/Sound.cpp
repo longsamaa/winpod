@@ -1,6 +1,6 @@
 #include "Sound.hpp"
 #include "platform/WindowsSdk.hpp"
-#include "log/Log.hpp"
+#include "common/Log.hpp"
 #include "NotificationClient.hpp"
 #include "PolicyConfig.hpp"
 #include <format>

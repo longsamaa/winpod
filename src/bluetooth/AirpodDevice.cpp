@@ -1,9 +1,9 @@
 #include "AirpodDevice.hpp"
-#include <core/AirpodParser.hpp>
+#include "bluetooth/AirpodParser.hpp"
 #include <cstdint>
 #include <format>
 #include <string>
-#include <log/Log.hpp>
+#include "common/Log.hpp"
 namespace winpod
 {
 namespace

@@ -1,7 +1,7 @@
 #ifndef _WINPOD_FRAME_ANIMATION_COMPONENT_HPP_
 #define _WINPOD_FRAME_ANIMATION_COMPONENT_HPP_
 #include "ui/component/Component.hpp"
-#include "ui/FrameAnimation.hpp"
+#include "ui/component/FrameAnimation.hpp"
 #include <filesystem>
 #include <string>
 namespace winpod

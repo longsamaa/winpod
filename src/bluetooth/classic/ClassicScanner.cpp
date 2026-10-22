@@ -5,8 +5,8 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include <log/Log.hpp>
-#include <core/AirpodParser.hpp>
+#include "common/Log.hpp"
+#include "bluetooth/AirpodParser.hpp"
 using namespace winrt::Windows::Devices::Bluetooth;
 using namespace winrt::Windows::Devices::Enumeration;
 namespace winpod

@@ -12,7 +12,7 @@ AirPods keep broadcasting a BLE advertisement (Apple's "Proximity Pairing" messa
 
 Connect/disconnect comes from Bluetooth Classic: the paired device list, filtered by Apple's vendor ID and the AirPods product IDs.
 
-One catch: the advertisement only has battery in 10% steps, rounded down, so WinPod can show up to 9% less than your iPhone (91% shows as 90%). The exact value is in the encrypted part of the packet, which I can't read on Windows.
+Battery levels in the advertisement come in 10% steps, rounded down, so the value shown can be up to 9% lower than on an iPhone (91% shows as 90%). The exact percentage is only in the encrypted part of the packet, which is not readable on Windows.
 
 ## Built with
 

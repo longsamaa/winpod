@@ -1,4 +1,4 @@
-#include "core/AirpodParser.hpp"
+#include "bluetooth/AirpodParser.hpp"
 #include "fakes/FakeRenderer.hpp"
 #include "resource/ResourceManager.hpp"
 #include <gtest/gtest.h>

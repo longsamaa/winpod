@@ -1,7 +1,7 @@
 #pragma once
 #ifndef _AIRPOD_DEVICE_HPP_
 #define _AIRPOD_DEVICE_HPP_
-#include <core/AirpodParser.hpp>
+#include "bluetooth/AirpodParser.hpp"
 #include <atomic>
 #include <chrono>
 #include <cstdint>

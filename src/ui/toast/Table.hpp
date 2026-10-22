@@ -1,7 +1,7 @@
 #ifndef _WINPOD_TABLE_HPP_
 #define _WINPOD_TABLE_HPP_
 #include "imgui.h"
-#include "core/AirpodParser.hpp"
+#include "bluetooth/AirpodParser.hpp"
 #include "ui/component/Component.hpp"
 #include <cstdint>
 #include <memory>
