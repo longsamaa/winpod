@@ -14,10 +14,19 @@ Battery levels in the advertisement come in 10% steps, rounded down, so the valu
 
 ## Built with
 
-- C++20, Win32, Direct3D 11, C++/WinRT for Bluetooth, Core Audio for the device list
-- [Dear ImGui](https://github.com/ocornut/imgui) for the UI
-- [trantor](https://github.com/an-tao/trantor), [spdlog](https://github.com/gabime/spdlog), [nlohmann/json](https://github.com/nlohmann/json), [stb_image](https://github.com/nothings/stb), [GoogleTest](https://github.com/google/googletest), all from [vcpkg](https://github.com/microsoft/vcpkg)
-- Fonts: [Inter](https://github.com/rsms/inter) and [Font Awesome Free](https://fontawesome.com) (licenses in `resources/fonts/`)
+| Library | Used for |
+|---|---|
+| C++/WinRT | Bluetooth LE advertisements, Bluetooth Classic device lookup |
+| Win32, Direct3D 11, DWM | Window, tray icon, rendering, transparent rounded toast |
+| Core Audio (MMDevice) | Audio device list, device change events, default device |
+| [Dear ImGui](https://github.com/ocornut/imgui) | UI |
+| [trantor](https://github.com/an-tao/trantor) | Event loops for the UI and the Bluetooth thread |
+| [spdlog](https://github.com/gabime/spdlog) | Logging |
+| [nlohmann/json](https://github.com/nlohmann/json) | Sprite sheet layout files |
+| [stb_image](https://github.com/nothings/stb) | PNG loading |
+| [GoogleTest](https://github.com/google/googletest) | Unit tests |
+| [vcpkg](https://github.com/microsoft/vcpkg) | Package manager |
+| [Inter](https://github.com/rsms/inter), [Font Awesome Free](https://fontawesome.com) | Fonts and icons (licenses in `resources/fonts/`) |
 
 ## Building
 
